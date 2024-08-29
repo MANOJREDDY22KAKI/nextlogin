@@ -15,7 +15,7 @@ import { FormData } from "@/types/formtype";
 import Grid from "@mui/material/Grid2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 
 const validateSchema = yup.object().shape({
   firstName: yup.string().required("First Name is Required"),
@@ -62,15 +62,6 @@ const LoginForm: React.FC = () => {
     reValidateMode: "onChange",
   });
 
-  const endAdornment = () => {
-    return (
-      <InputAdornment position="end">
-        <IconButton>
-          <VisibilityIcon />
-        </IconButton>
-      </InputAdornment>
-    );
-  };
 
   const formSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
@@ -172,13 +163,13 @@ const LoginForm: React.FC = () => {
             sx={{ display: "flex", alignItems: "center", position: "relative" }}
           >
             <TextField
-              {...register("Password")}
-              id="password"
-              label="Password"
+              {...register("ConfirmPassword")}
+              id="Confirmpassword"
+              label="Confirm Password"
               type={showPassword ? "text" : "password"}
               fullWidth
-              error={!!errors.Password}
-              helperText={errors.Password ? errors.Password.message : ""}
+              error={!!errors.ConfirmPassword}
+              helperText={errors.ConfirmPassword ? errors.ConfirmPassword.message : ""}
             />
             <IconButton
               onClick={() => {
