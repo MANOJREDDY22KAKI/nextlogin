@@ -15,6 +15,7 @@ import { FormData } from "@/types/formtype";
 import Grid from "@mui/material/Grid2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const validateSchema = yup.object().shape({
   firstName: yup.string().required("First Name is Required"),
@@ -138,43 +139,61 @@ const LoginForm: React.FC = () => {
         </Grid>
 
         <Grid size={{ xs: 12 }}>
-          <TextField
-            {...register("Password")}
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClickShowPassword} edge="end">
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            fullWidth
-            error={!!errors.Password}
-            helperText={errors.Password?.message}
-          />
+          <Box
+            sx={{ display: "flex", alignItems: "center", position: "relative" }}
+          >
+            <TextField
+              {...register("Password")}
+              id="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              error={!!errors.Password}
+              helperText={errors.Password ? errors.Password.message : ""}
+            />
+            <IconButton
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+            </IconButton>
+          </Box>
         </Grid>
 
         <Grid size={{ xs: 12 }}>
-        <TextField
-            {...register("ConfirmPassword")}
-            label="Confirm Password"
-            type={showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClickShowPassword} edge="end">
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            fullWidth
-            error={!!errors.ConfirmPassword}
-            helperText={errors.ConfirmPassword?.message}
-          />
+          <Box
+            sx={{ display: "flex", alignItems: "center", position: "relative" }}
+          >
+            <TextField
+              {...register("Password")}
+              id="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              error={!!errors.Password}
+              helperText={errors.Password ? errors.Password.message : ""}
+            />
+            <IconButton
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+            </IconButton>
+          </Box>
         </Grid>
 
         <Grid size={{ xs: 12 }}>
