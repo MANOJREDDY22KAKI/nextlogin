@@ -1,10 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Box, Button, TextField, Typography, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormData } from "@/types/formtype";
+import Grid from "@mui/material/Grid2";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const validateSchema = yup.object().shape({
   firstName: yup.string().required("First Name is Required"),
@@ -39,6 +49,7 @@ const validateSchema = yup.object().shape({
 });
 
 const LoginForm: React.FC = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -50,10 +61,24 @@ const LoginForm: React.FC = () => {
     reValidateMode: "onChange",
   });
 
+  const endAdornment = () => {
+    return (
+      <InputAdornment position="end">
+        <IconButton>
+          <VisibilityIcon />
+        </IconButton>
+      </InputAdornment>
+    );
+  };
+
   const formSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
     reset();
   };
+
+  function handleClickShowPassword(): void {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <Box
@@ -67,6 +92,9 @@ const LoginForm: React.FC = () => {
         borderRadius: 2,
         backgroundColor: "#fff",
         mt: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <Typography
@@ -77,9 +105,9 @@ const LoginForm: React.FC = () => {
       >
         SignUp Form
       </Typography>
-      
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+
+      <Grid container spacing={2} justifyContent="center">
+        <Grid size={{ xs: 12 }}>
           <TextField
             {...register("firstName")}
             label="First Name"
@@ -88,8 +116,8 @@ const LoginForm: React.FC = () => {
             helperText={errors.firstName?.message}
           />
         </Grid>
-        
-        <Grid item xs={12} sm={6}>
+
+        <Grid size={{ xs: 12 }}>
           <TextField
             {...register("lastName")}
             label="Last Name"
@@ -98,8 +126,8 @@ const LoginForm: React.FC = () => {
             helperText={errors.lastName?.message}
           />
         </Grid>
-        
-        <Grid item xs={12}>
+
+        <Grid size={{ xs: 12 }}>
           <TextField
             {...register("email")}
             label="Email"
@@ -109,29 +137,47 @@ const LoginForm: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <TextField
             {...register("Password")}
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClickShowPassword} edge="end">
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             fullWidth
             error={!!errors.Password}
             helperText={errors.Password?.message}
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <TextField
+        <Grid size={{ xs: 12 }}>
+        <TextField
             {...register("ConfirmPassword")}
             label="Confirm Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClickShowPassword} edge="end">
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             fullWidth
             error={!!errors.ConfirmPassword}
             helperText={errors.ConfirmPassword?.message}
           />
         </Grid>
-        
-        <Grid item xs={12} sm={6}>
+
+        <Grid size={{ xs: 12 }}>
           <TextField
             {...register("PhoneNumber")}
             label="Phone Number"
@@ -141,7 +187,7 @@ const LoginForm: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <TextField
             {...register("Zip")}
             label="Zip Code"
@@ -151,7 +197,7 @@ const LoginForm: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <TextField
             {...register("address")}
             label="Address"
@@ -161,7 +207,7 @@ const LoginForm: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <TextField
             {...register("state")}
             label="State"
@@ -171,7 +217,7 @@ const LoginForm: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <TextField
             {...register("Country")}
             label="Country"
@@ -181,7 +227,7 @@ const LoginForm: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={{ xs: 6, md: 8 }}>
           <Button
             type="submit"
             variant="contained"
@@ -198,7 +244,7 @@ const LoginForm: React.FC = () => {
               },
             }}
           >
-            Submit
+            SignUp
           </Button>
         </Grid>
       </Grid>
@@ -207,4 +253,3 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
-
