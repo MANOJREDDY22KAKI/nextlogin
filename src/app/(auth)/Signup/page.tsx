@@ -16,17 +16,22 @@ import Grid from "@mui/material/Grid2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-
 const validateSchema = yup.object().shape({
   firstName: yup.string().required("First Name is Required"),
   lastName: yup.string().required("Last Name is Required"),
-  email: yup.string().email("Invalid Email").required("Email is Required"),
+  email: yup
+    .string()
+    .matches(
+      /^[a-zA-Z0-9_.+\-]+[\x40][a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
+      "Invalid email"
+    )
+    .required("Email is Required"),
   address: yup.string().required("Address is Required"),
   state: yup.string().required("State is Required"),
   PhoneNumber: yup
     .string()
     .required("Phone Number is Required and it should be positive only")
-    .matches(/^\d{10}$/, "Phone Number must be exactly 10 digits"),
+    .matches(/^(\+1\s?)?(\d{3}|\(\d{3}\))[-.\s]?\d{3}[-.\s]?\d{4}$/, "Phone Number must be exactly 10 digits"),
   Zip: yup
     .string()
     .required("Zip Code is Required")
@@ -49,8 +54,9 @@ const validateSchema = yup.object().shape({
   Country: yup.string().required("Country is Required"),
 });
 
-const LoginForm: React.FC = () => {
+const SignUpForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -58,10 +64,9 @@ const LoginForm: React.FC = () => {
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(validateSchema),
-    mode: "onBlur",
+    mode: "onTouched",
     reValidateMode: "onChange",
   });
-
 
   const formSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
@@ -70,6 +75,9 @@ const LoginForm: React.FC = () => {
 
   function handleClickShowPassword(): void {
     setShowPassword(!showPassword);
+  }
+  function handleClickShowConfirmPassword(): void {
+    setShowConfirmPassword(!showConfirmPassword);
   }
 
   return (
@@ -82,7 +90,7 @@ const LoginForm: React.FC = () => {
         p: 3,
         boxShadow: 3,
         borderRadius: 2,
-        backgroundColor: "#fff",
+
         mt: 4,
         display: "flex",
         flexDirection: "column",
@@ -166,14 +174,16 @@ const LoginForm: React.FC = () => {
               {...register("ConfirmPassword")}
               id="Confirmpassword"
               label="Confirm Password"
-              type={showPassword ? "text" : "password"}
+              type={showConfirmPassword ? "text" : "password"}
               fullWidth
               error={!!errors.ConfirmPassword}
-              helperText={errors.ConfirmPassword ? errors.ConfirmPassword.message : ""}
+              helperText={
+                errors.ConfirmPassword ? errors.ConfirmPassword.message : ""
+              }
             />
             <IconButton
               onClick={() => {
-                setShowPassword(!showPassword);
+                setShowConfirmPassword(!showConfirmPassword);
               }}
               sx={{
                 position: "absolute",
@@ -182,7 +192,7 @@ const LoginForm: React.FC = () => {
                 transform: "translateY(-50%)",
               }}
             >
-              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
             </IconButton>
           </Box>
         </Grid>
@@ -262,4 +272,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

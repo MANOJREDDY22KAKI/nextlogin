@@ -10,3 +10,5 @@ export interface FormData {
     ConfirmPassword : string,
     Zip : string
 }
+// Define a LoginFormData type by picking specific fields from FormData
+export type LoginFormData = Pick<FormData, 'email'  | 'Password'>;
